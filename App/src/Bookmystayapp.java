@@ -1,7 +1,4 @@
-/**
- * Book My Stay App - Use Case 2
- * Single file version (easy to compile & run)
- */
+import java.util.HashMap;
 
 abstract class Room {
     protected String type;
@@ -47,29 +44,52 @@ class SuiteRoom extends Room {
     }
 }
 
+class RoomInventory {
+    private HashMap<String, Integer> inventory;
+
+    public RoomInventory() {
+        inventory = new HashMap<>();
+        inventory.put("Single Room", 5);
+        inventory.put("Double Room", 3);
+        inventory.put("Suite Room", 2);
+    }
+
+    public int getAvailability(String roomType) {
+        return inventory.getOrDefault(roomType, 0);
+    }
+
+    public void updateAvailability(String roomType, int count) {
+        inventory.put(roomType, count);
+    }
+
+    public void displayInventory() {
+        System.out.println("\n===== Current Room Inventory =====");
+        for (String key : inventory.keySet()) {
+            System.out.println(key + " -> Available: " + inventory.get(key));
+        }
+    }
+}
+
 public class BookMyStayApp {
 
     public static void main(String[] args) {
-
-        System.out.println("===== Room Availability =====");
 
         Room single = new SingleRoom();
         Room doubleRoom = new DoubleRoom();
         Room suite = new SuiteRoom();
 
-        int singleAvailable = 5;
-        int doubleAvailable = 3;
-        int suiteAvailable = 2;
+        RoomInventory inventory = new RoomInventory();
 
+        System.out.println("===== Room Details =====");
         single.displayDetails();
-        System.out.println("Available: " + singleAvailable + "\n");
+        System.out.println("Available: " + inventory.getAvailability("Single Room"));
 
         doubleRoom.displayDetails();
-        System.out.println("Available: " + doubleAvailable + "\n");
+        System.out.println("Available: " + inventory.getAvailability("Double Room"));
 
         suite.displayDetails();
-        System.out.println("Available: " + suiteAvailable + "\n");
+        System.out.println("Available: " + inventory.getAvailability("Suite Room"));
 
-        System.out.println("Application Finished.");
+        inventory.displayInventory();
     }
 }
